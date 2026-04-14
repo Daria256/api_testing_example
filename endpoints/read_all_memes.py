@@ -15,3 +15,8 @@ class ReadMeme(Endpoint):
             self.json = {"raw_text": self.response.text.strip()}
 
         return self.response
+
+    def check_any_mem_in_data(self):
+        assert self.json, "Response is empty"
+        memes = self.json.get("data", [])
+        assert len(memes) > 0, "No memes found in response"
