@@ -16,18 +16,18 @@ TEST_CREATE_MEME_INVALID_DATA = [
         "info": {"colors": ["blue", "brown"], "objects": ["picture", "text"]},
     },
     {
-        "text": "I always see advertisement everywhere",
-        "url": "https://amdg.ru/upload/NewFolder/mem-pro-reklamu.png",
-        "tags": None,
-        "info": {"colors": ["blue", "brown"], "objects": ["picture", "text"]},
-    },
-    {
         "url": "https://amdg.ru/upload/NewFolder/mem-pro-reklamu.png",
         "tags": ["courses", "programming", "doctor"],
         "info": {"colors": ["blue", "brown"], "objects": ["picture", "text"]},
     },
     {
         "text": "I always see advertisement everywhere",
+        "info": {"colors": ["blue", "brown"], "objects": ["picture", "text"]},
+    },
+    {
+        "text": "I always see advertisement everywhere",
+        "url": "https://amdg.ru/upload/NewFolder/mem-pro-reklamu.png",
+        "tags": None,
         "info": {"colors": ["blue", "brown"], "objects": ["picture", "text"]},
     },
     {
