@@ -2,8 +2,9 @@
 import sys
 import os
 import pytest
+import random
 
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if BASE_DIR not in sys.path:
     sys.path.insert(0, BASE_DIR)
 
@@ -11,7 +12,7 @@ from endpoints.create_token import CreateToken
 from endpoints.create_meme import CreateMeme
 from endpoints.check_token_is_alive import CheckToken
 from endpoints.read_all_memes import ReadMeme
-from endpoints.read_created_meme import ReadCreatedMeme
+from endpoints.read_meme import ReadCreatedMeme
 from endpoints.update_meme import UpdateMeme
 from endpoints.delete_meme import DeleteMeme
 
@@ -37,7 +38,7 @@ def read_all_memes_endpoint():
 
 
 @pytest.fixture()
-def read_created_meme_endpoint():
+def read_meme_endpoint():
     return ReadCreatedMeme()
 
 
@@ -58,7 +59,7 @@ def auth_token(create_token_endpoint):
     assert response.status_code == 200
     token = response.json().get("token")
     assert token, "Token not created"
-    create_token_endpoint.print_token()
+    create_token_endpoint.check_token_is_exist()
 
     check_token_endpoint = CheckToken()
     headers = {"Authorization": f"Bearer {token}"}
@@ -79,12 +80,12 @@ def authorized_headers(auth_token):
 
 @pytest.fixture()
 def meme_id(create_meme_endpoint, authorized_headers, delete_meme_endpoint):
-    body = {"text": "I always see advertisement everywhere",
-            "url": "https://amdg.ru/upload/NewFolder/mem-pro-reklamu.png",
-            "tags": ["courses", "programming", "doctor"],
-            "info": {"colors": ["blue", "brown"],
-                     "objects": ["picture", "text"]}
-            }
+    body = {
+        "text": "I always see advertisement everywhere",
+        "url": "https://amdg.ru/upload/NewFolder/mem-pro-reklamu.png",
+        "tags": ["courses", "programming", "doctor"],
+        "info": {"colors": ["blue", "brown"], "objects": ["picture", "text"]},
+    }
     response = create_meme_endpoint.create_meme(body=body, headers=authorized_headers)
     response_data = response.json()
 
@@ -95,3 +96,8 @@ def meme_id(create_meme_endpoint, authorized_headers, delete_meme_endpoint):
 
     yield meme_id
     delete_meme_endpoint.delete_meme(meme_id)
+
+
+@pytest.fixture()
+def not_existing_id():
+    return random.randint(10_000, 1_000_000)

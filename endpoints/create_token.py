@@ -11,9 +11,9 @@ class CreateToken(Endpoint):
         self.json = self.response.json()
         return self.response
 
-    def print_token(self):
+    def check_token_is_exist(self):
         if self.json and "token" in self.json:
-            print(f"Token: {self.json['token']}")
+            print(f"Token: {self.json['token']} is existing")
         else:
             print("Token is still pending")
 
@@ -21,11 +21,15 @@ class CreateToken(Endpoint):
         assert self.json is not None, "JSON has not been received yet"
         if "user" in self.json:
             actual_name = self.json["user"]
-            assert actual_name == expected_name, f" We are expecting {expected_name}, but we have received {actual_name}"
+            assert (
+                actual_name == expected_name
+            ), f" We are expecting {expected_name}, but we have received {actual_name}"
         else:
             assert "token" in self.json, "There is no token"
 
     def check_token_with_empty_name(self, name):
         body = {"name": name}
         self.create_token("authorize", body)
-        assert self.response.status_code == 400, f"Expected 400, because we have sent empty value in name, but we received {self.response.status_code}"
+        assert (
+            self.response.status_code == 400
+        ), f"Expected 400, because we have sent empty value in name, but we received {self.response.status_code}"
